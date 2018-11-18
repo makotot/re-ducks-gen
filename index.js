@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const path = require('path')
 const fs = require('fs')
 const async = require('async')
@@ -29,44 +31,48 @@ const loadConfig = () => {
 }
 
 const add = () => {
-  loadConfig().then(({ config }) => {
-    const rootDir = config.root ? path.resolve(process.cwd(), config.root) : process.cwd()
+  loadConfig()
+    .then(({ config }) => {
+      const rootDir = (config && config.root) ? path.resolve(process.cwd(), config.root) : process.cwd()
 
-    inquirer
-      .prompt(questions)
-      .then((answers) => {
-        const duckDir = path.resolve(rootDir, answers['name'])
-        const templateDir = './.templates'
+      inquirer
+        .prompt(questions)
+        .then((answers) => {
+          const duckDir = path.resolve(rootDir, answers['name'])
+          const templateDir = './.templates'
 
-        mkdir.sync(duckDir)
+          mkdir.sync(duckDir)
 
-        const fileTypes = ['index', 'actions', 'operations', 'reducers', 'selectors', 'types', 'tests']
-        const files = fileTypes.map((name) => {
-          return (
-            {
-              input: path.resolve(templateDir, `${ name }.js`),
-              output: path.resolve(duckDir, `${ name }.js`),
+          const fileTypes = ['index', 'actions', 'operations', 'reducers', 'selectors', 'types', 'tests']
+          const files = fileTypes.map((name) => {
+            return (
+              {
+                input: path.resolve(templateDir, `${ name }.js`),
+                output: path.resolve(duckDir, `${ name }.js`),
+              }
+            )
+          })
+
+          async.each(files, (file, cb) => {
+            if (answers['isUsingTemplate']) {
+              fs.copyFile(file.input, file.output, () => {
+                console.log(file.output)
+                cb()
+              })
+            } else {
+              fs.writeFile(file.output, '', () => {
+                console.log(file.output)
+                cb()
+              })
             }
-          )
+          }, () => {
+            console.log('Duck files are generated!')
+          })
         })
-
-        async.each(files, (file, cb) => {
-          if (answers['isUsingTemplate']) {
-            fs.copyFile(file.input, file.output, () => {
-              console.log(file.output)
-              cb()
-            })
-          } else {
-            fs.writeFile(file.output, '', () => {
-              console.log(file.output)
-              cb()
-            })
-          }
-        }, () => {
-          console.log('Duck files are generated!')
-        })
-      })
-  })
+    })
+    .catch((err) => {
+      console.error(err)
+    })
 }
 
 commander
