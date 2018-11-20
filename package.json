@@ -14,6 +14,20 @@
     "type": "git",
     "url": "https://github.com/makotot/re-ducks-gen"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,json,md}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "re-ducks-gen": {
+    "root": "./state/ducks"
+  },
   "dependencies": {
     "async": "^2.6.1",
     "commander": "^2.19.0",
@@ -21,7 +35,9 @@
     "inquirer": "^6.2.0",
     "make-dir": "^1.3.0"
   },
-  "re-ducks-gen": {
-    "root": "./state/ducks"
+  "devDependencies": {
+    "husky": "^1.1.4",
+    "lint-staged": "^8.0.5",
+    "prettier": "^1.15.2"
   }
 }
