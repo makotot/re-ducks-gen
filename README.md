@@ -1,7 +1,9 @@
 # re-ducks-gen
 
-> Cli tool to generate duck files of [re-ducks](https://github.com/alexnm/re-ducks)
+[![npm](https://img.shields.io/npm/v/re-ducks-gen.svg?style=flat-square)](https://www.npmjs.com/package/re-ducks-gen)
+[![NpmLicense](https://img.shields.io/npm/l/re-ducks-gen.svg?style=flat-square)](https://www.npmjs.com/package/re-ducks-gen)
 
+> Cli tool to generate duck files of [re-ducks](https://github.com/alexnm/re-ducks)
 
 ## Install
 
