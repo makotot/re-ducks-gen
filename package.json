@@ -1,6 +1,6 @@
 {
   "name": "re-ducks-gen",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "main": "./index.js",
   "bin": {
     "re-ducks-gen": "./index.js"
